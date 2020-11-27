@@ -1,22 +1,20 @@
-import { StatusBar } from 'expo-status-bar';
+import {StatusBar} from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import {View} from 'react-native';
 import MainPage from "./src/MainPage";
+import AppStyles from "./src/styles/AppStyles";
+import DBServices, {FoodEntity} from "./src/services/DBServices";
+
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <MainPage />
-      <StatusBar style="auto" />
-    </View>
-  );
+
+    DBServices.loadFoods();
+
+    return (
+        <View style={AppStyles.commonStyles.appContainer}>
+            <MainPage/>
+            <StatusBar style="auto"/>
+        </View>
+    );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
