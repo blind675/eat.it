@@ -1,20 +1,12 @@
-import {StatusBar} from 'expo-status-bar';
 import React from 'react';
-import {View} from 'react-native';
-import MainPage from "./src/MainPage";
-import AppStyles from "./src/styles/AppStyles";
-import DBServices, {FoodEntity} from "./src/services/DBServices";
+import DBServices from "./src/services/DBServices";
+import Router from "./src/Router";
 
 
 export default function App() {
 
     DBServices.loadFoods();
 
-    return (
-        <View style={AppStyles.commonStyles.appContainer}>
-            <MainPage/>
-            <StatusBar style="auto"/>
-        </View>
-    );
+    return ( <Router/> );
 }
 

@@ -4,7 +4,6 @@ import {Cell} from "./Cell";
 import AppStyles from "../styles/AppStyles";
 
 
-
 export default function MenuDisplay() {
     return (
         <>
