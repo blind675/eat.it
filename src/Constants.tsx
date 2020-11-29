@@ -20,8 +20,8 @@ export const DB = Object.freeze({
             '\t`last_eat_timestamp` INT(20)\n' +
             ')',
         insert: 'INSERT INTO foods (\n' +
-            'food_name, is_breakfast, is_snack, is_lunch, is_supper, countdown_days, consecutive_days, last_eat_timestamp)\n' +
-            ' VALUES (?,?,?,?,?,?,?,?)',
+            'food_name, is_breakfast, is_snack, is_lunch, is_supper, countdown_days, consecutive_days)\n' +
+            ' VALUES (?,?,?,?,?,?,?)',
 
         update: '',
         getAll: 'SELECT * FROM foods',

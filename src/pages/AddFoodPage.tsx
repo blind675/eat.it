@@ -1,12 +1,12 @@
 import React from "react";
-import {View, TextInput, Text} from "react-native";
+import {View, TextInput, Text, Alert} from "react-native";
 import {NavigationParams, NavigationScreenProp} from "react-navigation";
 import Slider from '@react-native-community/slider';
 import AppStyles from "../styles/AppStyles";
 import PageHeader from "../components/PageHeader";
 import {Button} from "../components/Button";
 import {CheckBox} from "../components/CheckBox";
-import {FoodEntity} from "../services/DBServices";
+import DBServices, {FoodEntity} from "../services/DBServices";
 
 type props = {
     navigation: NavigationScreenProp<object>
@@ -17,25 +17,44 @@ export default function AddFoodPage(props: props) {
     const item: FoodEntity = props.route.params ? props.route.params.item : {};
 
     const [foodName, setFoodName] = React.useState(item.foodName || '');
-    const [isBreakfast, setIsBreakfast] = React.useState( item.isBreakfast || false);
+    const [isBreakfast, setIsBreakfast] = React.useState(item.isBreakfast || false);
     const [isLunch, setIsLunch] = React.useState(item.isLunch || false);
     const [isSnack, setIsSnack] = React.useState(item.isSnack || false);
     const [isSupper, setIsSupper] = React.useState(item.isSupper || false);
     const [consecutiveDays, setConsecutiveDays] = React.useState(item.consecutiveDays || 1);
-    const [coolDownDays, setCoolDownDays] = React.useState(item.coolDownDays|| 0);
+    const [coolDownDays, setCoolDownDays] = React.useState(item.coolDownDays || 0);
 
     const handle_saveButtonPressed = () => {
 
-        // TODO: validate at least a name and one category
+        if (foodName === '') {
+            Alert.alert('Missing Food Name', 'Please provide a name for the food you want to save!');
+            return;
+        }
 
-        console.log('');
-        console.log(' foodName :', foodName);
-        console.log(' isBreakfast :', isBreakfast);
-        console.log(' isLunch :', isLunch);
-        console.log(' isSnack :', isSnack);
-        console.log(' isSupper :', isSupper);
-        console.log(' consecutiveDays :', consecutiveDays);
-        console.log(' coolDownDays :', coolDownDays);
+        if (!isBreakfast && !isSnack && !isLunch && !isSupper) {
+            Alert.alert('Missing Food Category', 'Please select a least one category of when the food can be served!');
+            return;
+        }
+
+        const foodItemToSave: FoodEntity = {
+            ...item,
+            foodName,
+            isBreakfast,
+            isSnack,
+            isLunch,
+            isSupper,
+            coolDownDays,
+            consecutiveDays,
+        }
+
+        // console.log('');
+        // console.log(' foodItemToSave :', foodItemToSave);
+
+        if (foodItemToSave.id) {
+            // DBServices.updateFood(foodItemToSave);
+        } else {
+            DBServices.insertFood(foodItemToSave, () => props.navigation.goBack());
+        }
 
     }
 
@@ -58,7 +77,7 @@ export default function AddFoodPage(props: props) {
                     <CheckBox
                         title='Breakfast'
                         selected={isBreakfast}
-                        onPress={(selected) => setIsBreakfast(selected) }/>
+                        onPress={(selected) => setIsBreakfast(selected)}/>
                     <CheckBox
                         title='Snack'
                         selected={isSnack}
@@ -68,11 +87,11 @@ export default function AddFoodPage(props: props) {
                     <CheckBox
                         title='Lunch'
                         selected={isLunch}
-                        onPress={(selected) => setIsLunch(selected) }/>
+                        onPress={(selected) => setIsLunch(selected)}/>
                     <CheckBox
                         title='Supper'
                         selected={isSupper}
-                        onPress={(selected) => setIsSupper(selected)} />
+                        onPress={(selected) => setIsSupper(selected)}/>
                 </View>
             </View>
 

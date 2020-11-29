@@ -84,13 +84,14 @@ class DBServices {
 
     // DBServices.insertFood(food);
 
-    _insert(food: FoodEntity) {
+    _insert(food: FoodEntity, callback?: () => void) {
         this.db.transaction((tx) => {
             tx.executeSql(
                 DB.queries.insert,
                 [food.foodName, food.isBreakfast, food.isSnack, food.isLunch, food.isSupper, food.coolDownDays, food.coolDownDays, food.lastEatTimestamp],
                 (tx, results) => {
-                    // console.log('Insert in DB result:', results);
+                    this.foods.push(food);
+                    callback && callback();
                 },
                 (_, error) => {
                     console.log('Insert in DB Error:', error);
@@ -132,8 +133,8 @@ class DBServices {
         return this._instance._load();
     }
 
-    static insertFood(food: FoodEntity) {
-        return this._instance._insert(food);
+    static insertFood(food: FoodEntity, callback?: ()=> {}) {
+        return this._instance._insert(food, callback);
     }
 
     static drop() {

@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import {View, FlatList, Text, TouchableOpacity} from "react-native";
 import {NavigationScreenProp} from "react-navigation";
+import {useIsFocused} from '@react-navigation/native';
 import AppStyles from "../styles/AppStyles";
 import PageHeader from "../components/PageHeader";
 import {Pages} from "../Constants";
@@ -16,7 +17,11 @@ type listItem = {
 
 export default function FoodPage(props: props) {
 
-    const renderFoodList = (listItem:listItem) => {
+    // Hack to force a rerender.
+    // Didn't want to use state libs like Redux or Mobx
+    const isFocused = useIsFocused();
+
+    const renderFoodList = (listItem: listItem) => {
         return (
             <TouchableOpacity
                 style={AppStyles.commonStyles.foodListRow}
@@ -29,7 +34,6 @@ export default function FoodPage(props: props) {
                 <Text style={AppStyles.textStyles.text}>{'>'}</Text>
             </TouchableOpacity>
         );
-
     }
 
     return (
@@ -40,12 +44,12 @@ export default function FoodPage(props: props) {
                 }}
                 rightMaterialIconName="add"
                 navigation={props.navigation}/>
-
             <FlatList
                 data={DBServices.foodList}
                 renderItem={renderFoodList}
-                keyExtractor={item => `${item.id}`}
+                keyExtractor={item => `${item.id || Math.random() * 1000}`}
             />
+
         </View>
     )
 }
