@@ -26,7 +26,7 @@ class DBServices {
         this.foods = [];
     }
 
-    _load() {
+    _load(callback?: () => void) {
         this.db.transaction(
             (tx) => {
                 tx.executeSql(
@@ -62,6 +62,7 @@ class DBServices {
                             }
                             this.foods.push(food);
                         }
+                        callback && callback();
                     },
                 );
             }, (error) => {
@@ -109,7 +110,7 @@ class DBServices {
         });
     }
 
-    _deleteFoodFromLocalStore(food:  FoodEntity) {
+    _deleteFoodFromLocalStore(food: FoodEntity) {
         const foodIndex = this.foods.findIndex((item: FoodEntity) => food.id == item.id);
         this.foods.splice(foodIndex, 1);
     }
@@ -160,8 +161,8 @@ class DBServices {
         return this._instance.foods.length !== 0;
     }
 
-    static loadFoods() {
-        return this._instance._load();
+    static loadFoods(callback?: () => void) {
+        return this._instance._load(callback);
     }
 
     static insertFood(food: FoodEntity, callback?: () => {}) {
