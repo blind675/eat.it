@@ -47,14 +47,31 @@ export default function AddFoodPage(props: props) {
             consecutiveDays,
         }
 
-        // console.log('');
-        // console.log(' foodItemToSave :', foodItemToSave);
-
         if (foodItemToSave.id) {
-            // DBServices.updateFood(foodItemToSave);
+            DBServices.updateFood(foodItemToSave, () => props.navigation.goBack());
         } else {
             DBServices.insertFood(foodItemToSave, () => props.navigation.goBack());
         }
+
+    }
+
+    const handle_deleteButtonPressed = () => {
+
+        Alert.alert(
+            'Delete Confirm',
+            'Are you sure you want ot delete this meal?',
+            [
+                {
+                    text: 'No',
+                    onPress: () => { },
+                    style: 'cancel'
+                },
+                {
+                    text: 'YES',
+                    onPress: () => DBServices.deleteFood(item, () => props.navigation.goBack())
+                },
+            ]
+        );
 
     }
 
@@ -119,7 +136,7 @@ export default function AddFoodPage(props: props) {
                         style={AppStyles.commonStyles.slider}
                         step={1}
                         minimumValue={0}
-                        maximumValue={8}
+                        maximumValue={9}
                         value={coolDownDays}
                         onValueChange={(value) => {
                             setCoolDownDays(value)
@@ -134,6 +151,11 @@ export default function AddFoodPage(props: props) {
                 <Button
                     title="Save"
                     onPress={handle_saveButtonPressed}
+                />
+                <Button
+                    title="Delete"
+                    onPress={handle_deleteButtonPressed}
+                    buttonStyle={AppStyles.commonStyles.deleteButton}
                 />
             </View>
 

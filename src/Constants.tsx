@@ -23,9 +23,14 @@ export const DB = Object.freeze({
             'food_name, is_breakfast, is_snack, is_lunch, is_supper, countdown_days, consecutive_days)\n' +
             ' VALUES (?,?,?,?,?,?,?)',
 
-        update: '',
+        update: 'UPDATE foods\n' +
+            ' SET food_name= ?, is_breakfast= ?, is_snack= ?, is_lunch= ?, is_supper= ?, countdown_days= ?, consecutive_days= ?, last_eat_timestamp= ?\n' +
+            ' WHERE id = ?',
+
         getAll: 'SELECT * FROM foods',
-        delete: '',
+
+        delete: 'DELETE FROM foods\n '+
+            'WHERE id= ?',
     }
 });
 

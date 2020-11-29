@@ -20,6 +20,7 @@ const dimensions = {
 
     buttonWidth: 200,
     buttonHeight: 50,
+    deleteButtonWidth: 75,
 
     foodListRowHeight: 60,
 
@@ -35,6 +36,7 @@ const colors = {
     white: '#FFFFFF',
     green: '#293132',       // white
     blue: '#547AA5',        // white
+    red: '#C8331F',
     gray: '#4F5165',        // white
     darkLiver: '#474044',   // white
     turquoise: '#50D8D7',   // black
@@ -66,7 +68,17 @@ const _baseStyles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         alignItems: 'center',
-    }
+    },
+    button: {
+        width: dimensions.buttonWidth,
+        height: dimensions.buttonHeight,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: colors.blue,
+        borderRadius: 10,
+        borderWidth: 1,
+        borderColor: colors.darkLiver,
+    },
 });
 
 const _baseFontStyles = StyleSheet.create({
@@ -179,14 +191,7 @@ class AppStyles {
                 borderRadius: 20,
             },
             button: {
-                width: dimensions.buttonWidth,
-                height: dimensions.buttonHeight,
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: colors.blue,
-                borderRadius: 10,
-                borderWidth: 1,
-                borderColor: colors.darkLiver,
+                ..._baseStyles.button,
             },
             card: {
                 flex: 1,
@@ -245,10 +250,9 @@ class AppStyles {
                 borderBottomWidth: 1,
             },
             foodSaveSection: {
+                ..._baseStyles.row,
                 padding: dimensions.paddingGeneral,
-                alignSelf: 'stretch',
-                alignItems: 'center',
-                justifyContent: 'center',
+                justifyContent: 'space-around',
             },
             selectedCheckBox: {
                 backgroundColor: colors.gray,
@@ -264,6 +268,11 @@ class AppStyles {
             slider: {
                 flex: 1,
                 marginHorizontal:dimensions.marginGeneral,
+            },
+            deleteButton: {
+                ..._baseStyles.button,
+                width: dimensions.deleteButtonWidth,
+                backgroundColor: colors.red,
             }
         });
     }

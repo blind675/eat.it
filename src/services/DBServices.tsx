@@ -70,20 +70,6 @@ class DBServices {
         )
     }
 
-
-    // const food: FoodEntity = {
-    //     consecutiveDays: 0,
-    //     coolDownDays: 0,
-    //     isBreakfast: false,
-    //     isLunch: false,
-    //     isSnack: false,
-    //     isSupper: false,
-    //     lastEatTimestamp: 0,
-    //     foodName: 'mango'
-    // }
-
-    // DBServices.insertFood(food);
-
     _insert(food: FoodEntity, callback?: () => void) {
         this.db.transaction((tx) => {
             tx.executeSql(
@@ -101,16 +87,61 @@ class DBServices {
         });
     }
 
+    _updateFoodInLocalStore(food: FoodEntity) {
+        const foodIndex = this.foods.findIndex((item: FoodEntity) => food.id == item.id);
+        this.foods[foodIndex] = food;
+    }
+
+    _update(food: FoodEntity, callback?: () => void) {
+        this.db.transaction((tx) => {
+            tx.executeSql(
+                DB.queries.update,
+                [food.foodName, food.isBreakfast, food.isSnack, food.isLunch, food.isSupper, food.coolDownDays, food.coolDownDays, food.lastEatTimestamp, food.id],
+                (tx, results) => {
+                    this._updateFoodInLocalStore(food);
+                    callback && callback();
+                },
+                (_, error) => {
+                    console.log('Update in DB Error:', error);
+
+                    return true;
+                });
+        });
+    }
+
+    _deleteFoodFromLocalStore(food:  FoodEntity) {
+        const foodIndex = this.foods.findIndex((item: FoodEntity) => food.id == item.id);
+        this.foods.splice(foodIndex, 1);
+    }
+
+    _delete(food: FoodEntity, callback?: () => void) {
+        this.db.transaction((tx) => {
+            tx.executeSql(
+                DB.queries.delete,
+                [food.id],
+                (tx, results) => {
+                    this._deleteFoodFromLocalStore(food);
+                    callback && callback();
+                },
+                (_, error) => {
+                    console.log('Delete in DB Error:', error);
+
+                    return true;
+                });
+        });
+
+    }
+
     _dropTable() {
         this.db.transaction((tx) => {
             tx.executeSql(
                 'DROP TABLE foods',
                 [],
                 (tx, results) => {
-                    // console.log('Insert in DB result:', results);
+                    console.log('Drop DB result:', results);
                 },
                 (_, error) => {
-                    console.log('Insert in DB Error:', error);
+                    console.log('Drop DB Error:', error);
 
                     return true;
                 });
@@ -133,8 +164,16 @@ class DBServices {
         return this._instance._load();
     }
 
-    static insertFood(food: FoodEntity, callback?: ()=> {}) {
+    static insertFood(food: FoodEntity, callback?: () => {}) {
         return this._instance._insert(food, callback);
+    }
+
+    static updateFood(food: FoodEntity, callback?: () => {}) {
+        return this._instance._update(food, callback);
+    }
+
+    static deleteFood(food: FoodEntity, callback?: () => {}) {
+        return this._instance._delete(food, callback);
     }
 
     static drop() {
