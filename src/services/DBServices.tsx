@@ -9,7 +9,7 @@ export type FoodEntity = {
     isSnack: boolean,
     isLunch: boolean,
     isSupper: boolean,
-    countdownDays: number,
+    coolDownDays: number,
     consecutiveDays: number,
     lastEatTimestamp: number
 };
@@ -56,7 +56,7 @@ class DBServices {
                                 isSnack: item.is_snack,
                                 isLunch: item.is_lunch,
                                 isSupper: item.is_supper,
-                                countdownDays: item.countdown_days,
+                                coolDownDays: item.countdown_days,
                                 consecutiveDays: item.consecutive_days,
                                 lastEatTimestamp: item.last_eat_timestamp
                             }
@@ -73,7 +73,7 @@ class DBServices {
 
     // const food: FoodEntity = {
     //     consecutiveDays: 0,
-    //     countdownDays: 0,
+    //     coolDownDays: 0,
     //     isBreakfast: false,
     //     isLunch: false,
     //     isSnack: false,
@@ -88,7 +88,7 @@ class DBServices {
         this.db.transaction((tx) => {
             tx.executeSql(
                 DB.queries.insert,
-                [food.foodName, food.isBreakfast, food.isSnack, food.isLunch, food.isSupper, food.countdownDays, food.countdownDays, food.lastEatTimestamp],
+                [food.foodName, food.isBreakfast, food.isSnack, food.isLunch, food.isSupper, food.coolDownDays, food.coolDownDays, food.lastEatTimestamp],
                 (tx, results) => {
                     // console.log('Insert in DB result:', results);
                 },
@@ -117,6 +117,11 @@ class DBServices {
         });
     }
 
+
+    // @ts-ignore
+    static get foodList() {
+        return this._instance.foods;
+    }
 
     // @ts-ignore
     static get areAnyFoodInDB() {

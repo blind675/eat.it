@@ -1,13 +1,16 @@
 import {StyleSheet} from 'react-native';
 
 const dimensions = {
-    // heights
+
+    paddingGeneral: 16,
+    paddingSmall: 8,
+
+    marginGeneral: 16,
+    marginSmall: 8,
+
     headerHeight: 80,
 
     headerPaddingTop: 35,
-    paddingGeneral: 16,
-
-    marginSmall: 8,
 
     suggestButtonContainersHeight: 80,
     suggestButtonContainersTopMargin: 20,
@@ -17,6 +20,15 @@ const dimensions = {
 
     buttonWidth: 200,
     buttonHeight: 50,
+
+    foodListRowHeight: 60,
+
+    displayMenuRowHeight: 110,
+
+    textInputHeight: 40,
+
+    checkBoxHeight: 50,
+    checkBoxWidth: 150,
 }
 
 const colors = {
@@ -32,6 +44,7 @@ const colors = {
 
 const font = {
     sizeNormal: 16,
+    sizeMedium: 18,
     sizeBig: 22,
     sizeHeader: 26,
     sizeCellTitle: 18,
@@ -39,10 +52,39 @@ const font = {
     sizeSuggestButton: 23,
 }
 
+const _baseStyles = StyleSheet.create({
+    checkBox: {
+        height: dimensions.checkBoxHeight,
+        width: dimensions.checkBoxWidth,
+        paddingHorizontal: dimensions.paddingGeneral,
+        margin: dimensions.marginSmall,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        borderRadius: 4,
+    },
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    }
+});
+
+const _baseFontStyles = StyleSheet.create({
+    text: {
+        fontSize: font.sizeNormal,
+        color: colors.black,
+    },
+    checkBoxText: {
+        textAlign: 'left',
+        fontSize: font.sizeNormal,
+    },
+});
+
 //TODO: make singleton ??
-//TODO: export constants
+
 
 class AppStyles {
+
     static init() {
         //TODO: load color and font size from user defaults
     }
@@ -56,8 +98,11 @@ class AppStyles {
     static get textStyles() {
         return StyleSheet.create({
             text: {
-                fontSize: font.sizeNormal,
-                color: colors.black,
+                ..._baseFontStyles.text
+            },
+            headerSmall: {
+                fontSize: font.sizeMedium,
+                color: colors.darkLiver
             },
             headerTitle: {
                 fontSize: font.sizeHeader,
@@ -82,6 +127,14 @@ class AppStyles {
             },
             cellSelectedText: {
                 color: colors.white
+            },
+            selectedCheckBoxText: {
+                color: colors.white,
+                ..._baseFontStyles.checkBoxText,
+            },
+            unselectedCheckBoxText: {
+                color: colors.gray,
+                ..._baseFontStyles.checkBoxText,
             }
         });
     }
@@ -97,6 +150,9 @@ class AppStyles {
                 flex: 1,
                 alignItems: 'center',
                 justifyContent: 'center',
+            },
+            row: {
+              ..._baseStyles.row,
             },
             headerContainer: {
                 alignSelf: 'stretch',
@@ -161,9 +217,53 @@ class AppStyles {
             },
             displayMenuRow: {
                 flexDirection: 'row',
-                height: 110,
+                height: dimensions.displayMenuRowHeight,
                 alignSelf: 'stretch',
                 justifyContent: 'center',
+            },
+            foodListRow: {
+                height: dimensions.foodListRowHeight,
+                padding: dimensions.paddingSmall,
+                paddingLeft: dimensions.paddingGeneral,
+                marginLeft: dimensions.marginSmall,
+                flexDirection: 'row',
+                alignSelf: 'stretch',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                borderBottomWidth: 1,
+                borderBottomColor: colors.darkLiver,
+            },
+            foodInputSection: {
+                padding: dimensions.paddingGeneral,
+            },
+            foodNameInput: {
+                fontSize: font.sizeNormal,
+                height: dimensions.textInputHeight,
+                marginTop: dimensions.marginSmall,
+                paddingLeft: dimensions.paddingSmall,
+                borderBottomColor: colors.darkLiver,
+                borderBottomWidth: 1,
+            },
+            foodSaveSection: {
+                padding: dimensions.paddingGeneral,
+                alignSelf: 'stretch',
+                alignItems: 'center',
+                justifyContent: 'center',
+            },
+            selectedCheckBox: {
+                backgroundColor: colors.gray,
+                borderWidth: 0,
+                ..._baseStyles.checkBox,
+            },
+            unselectedCheckBox: {
+                backgroundColor: colors.white,
+                borderWidth: 1,
+                borderColor: colors.gray,
+                ..._baseStyles.checkBox,
+            },
+            slider: {
+                flex: 1,
+                marginHorizontal:dimensions.marginGeneral,
             }
         });
     }
