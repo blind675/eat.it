@@ -147,6 +147,11 @@ class AppStyles {
             unselectedCheckBoxText: {
                 color: colors.gray,
                 ..._baseFontStyles.checkBoxText,
+            },
+            notEnoughMealsText: {
+                fontSize: font.sizeMedium,
+                fontWeight: 'bold',
+                color: colors.red,
             }
         });
     }

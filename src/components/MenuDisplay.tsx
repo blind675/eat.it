@@ -21,7 +21,9 @@ export default function MenuDisplay(props:props) {
                     label='Breakfast:'
                     title={props.suggestedMenu[0].foodName}
                     selected={nextMealCellIndex === 0}
-                    onPress={(isLocked) => {}}
+                    onPress={(isLocked) => {
+                        // TODO: what now :) ??
+                    }}
                 />
                 <Cell
                     label='Snack:'

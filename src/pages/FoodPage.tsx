@@ -6,6 +6,7 @@ import AppStyles from "../styles/AppStyles";
 import PageHeader from "../components/PageHeader";
 import {Pages} from "../Constants";
 import DBServices, {FoodEntity} from "../services/DBServices";
+import {AddMoreMealsInfo} from "../components/AddMoreMealsInfo";
 
 type props = {
     navigation: NavigationScreenProp<object>
@@ -44,11 +45,16 @@ export default function FoodPage(props: props) {
                 }}
                 rightMaterialIconName="add"
                 navigation={props.navigation}/>
-            <FlatList
-                data={DBServices.foodList}
-                renderItem={renderFoodList}
-                keyExtractor={item => `${item.id || Math.random() * 1000}`}
-            />
+            {DBServices.foodList.length === 0
+                ?
+                <AddMoreMealsInfo message="Add your meals by taping here."/>
+                :
+                <FlatList
+                    data={DBServices.foodList}
+                    renderItem={renderFoodList}
+                    keyExtractor={item => `${item.id || Math.random() * 1000}`}
+                />
+            }
 
         </View>
     )

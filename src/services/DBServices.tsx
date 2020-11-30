@@ -11,7 +11,8 @@ export type FoodEntity = {
     isSupper: boolean,
     coolDownDays: number,
     consecutiveDays: number,
-    lastEatTimestamp: number
+    lastEatTimestamp: number,
+    startEatTimestamp: number,
 };
 
 class DBServices {
@@ -56,9 +57,10 @@ class DBServices {
                                 isSnack: item.is_snack,
                                 isLunch: item.is_lunch,
                                 isSupper: item.is_supper,
-                                coolDownDays: item.countdown_days,
+                                coolDownDays: item.cool_down_days,
                                 consecutiveDays: item.consecutive_days,
-                                lastEatTimestamp: item.last_eat_timestamp
+                                lastEatTimestamp: item.last_eat_timestamp,
+                                startEatTimestamp: item.start_eat_timestamp
                             }
                             this.foods.push(food);
                         }
@@ -75,7 +77,7 @@ class DBServices {
         this.db.transaction((tx) => {
             tx.executeSql(
                 DB.queries.insert,
-                [food.foodName, food.isBreakfast, food.isSnack, food.isLunch, food.isSupper, food.coolDownDays, food.coolDownDays, food.lastEatTimestamp],
+                 [food.foodName, food.isBreakfast, food.isSnack, food.isLunch, food.isSupper, food.coolDownDays, food.consecutiveDays],
                 (tx, results) => {
                     this.foods.push(food);
                     callback && callback();
@@ -97,7 +99,7 @@ class DBServices {
         this.db.transaction((tx) => {
             tx.executeSql(
                 DB.queries.update,
-                [food.foodName, food.isBreakfast, food.isSnack, food.isLunch, food.isSupper, food.coolDownDays, food.coolDownDays, food.lastEatTimestamp, food.id],
+                [food.foodName, food.isBreakfast, food.isSnack, food.isLunch, food.isSupper, food.coolDownDays, food.consecutiveDays, food.lastEatTimestamp, food.startEatTimestamp, food.id],
                 (tx, results) => {
                     this._updateFoodInLocalStore(food);
                     callback && callback();

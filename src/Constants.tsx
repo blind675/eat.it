@@ -15,16 +15,18 @@ export const DB = Object.freeze({
             '\t`is_snack` BOOLEAN,\n' +
             '\t`is_lunch` BOOLEAN,\n' +
             '\t`is_supper` BOOLEAN,\n' +
-            '\t`countdown_days` INT(5),\n' +
+            '\t`cool_down_days` INT(5),\n' +
             '\t`consecutive_days` INT(5),\n' +
-            '\t`last_eat_timestamp` INT(20)\n' +
+            '\t`last_eat_timestamp` INT(20),\n' +
+            '\t`start_eat_timestamp` INT(20)\n' +
             ')',
+
         insert: 'INSERT INTO foods (\n' +
-            'food_name, is_breakfast, is_snack, is_lunch, is_supper, countdown_days, consecutive_days)\n' +
+            'food_name, is_breakfast, is_snack, is_lunch, is_supper, cool_down_days, consecutive_days)\n' +
             ' VALUES (?,?,?,?,?,?,?)',
 
         update: 'UPDATE foods\n' +
-            ' SET food_name= ?, is_breakfast= ?, is_snack= ?, is_lunch= ?, is_supper= ?, countdown_days= ?, consecutive_days= ?, last_eat_timestamp= ?\n' +
+            ' SET food_name= ?, is_breakfast= ?, is_snack= ?, is_lunch= ?, is_supper= ?, cool_down_days= ?, consecutive_days= ?, last_eat_timestamp= ?, start_eat_timestamp= ?\n' +
             ' WHERE id = ?',
 
         getAll: 'SELECT * FROM foods',
