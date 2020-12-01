@@ -25,11 +25,15 @@ class TimeServices {
         return 4;
     }
 
-    static getDaysSinceTimestamp(timestamp: number) {
-        const dateNow = new Date();
-        const dateTimestamp = new Date(timestamp);
+    static daysSinceTimestamp(timestamp: number) {
+        return TimeServices.daysDifferenceBetweenTimestamp(timestamp, Date.now());
+    }
 
-        return Math.floor((Date.UTC(dateNow.getFullYear(), dateNow.getMonth(), dateNow.getDate()) - Date.UTC(dateTimestamp.getFullYear(), dateTimestamp.getMonth(), dateTimestamp.getDate()) ) /(1000 * 60 * 60 * 24));
+    static daysDifferenceBetweenTimestamp(firstTimestamp: number, secondTimestamp: number) {
+        const date1 = new Date(firstTimestamp);
+        const date2 = new Date(secondTimestamp);
+
+        return Math.floor((Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) - Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()) ) /(1000 * 60 * 60 * 24));
     }
 }
 

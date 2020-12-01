@@ -1,3 +1,7 @@
+export const Keys = Object.freeze({
+    recommendedMenu: '@recommendedMenu'
+});
+
 export const Pages = Object.freeze({
     main: 'MainPage',
     food: 'FoodPages',

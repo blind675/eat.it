@@ -11,8 +11,9 @@ export type FoodEntity = {
     isSupper: boolean,
     coolDownDays: number,
     consecutiveDays: number,
-    lastEatTimestamp: number,
-    startEatTimestamp: number,
+    lastEatTimestamp?: number,
+    startEatTimestamp?: number,
+    suggestedTimeStamp?: number,
 };
 
 class DBServices {

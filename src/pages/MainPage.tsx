@@ -7,7 +7,7 @@ import {Button} from "../components/Button";
 import MenuDisplay from "../components/MenuDisplay";
 import DBServices from "../services/DBServices";
 import {Pages} from "../Constants";
-import SuggestingServices from "../services/SuggestingServices";
+import SuggestionServices from "../services/SuggestionServices";
 import {AddMoreMealsInfo} from "../components/AddMoreMealsInfo";
 
 type props = {
@@ -21,19 +21,26 @@ export default function MainPage(props: props) {
 
     useEffect(() => {
         DBServices.loadFoods(() => {
-            setDataLoaded(true);
             setFoodsInDB(DBServices.areAnyFoodInDB);
+            setTimeout(() => {
+
+                if(!SuggestionServices.isTheSuggestionMadeToday) {
+                    SuggestionServices.suggestedNewMenu();
+                }
+
+                setDataLoaded(true);
+                }, 500);
         });
     }, [])
 
-    // TODO: decide when to update the timestamps for the suggested foods  === user eat the meals
-
     const renderSuggestedMenu = () => {
         if (foodsInDB) {
-            const suggestedMenu = SuggestingServices.suggestMenu();
-            const canSuggestionBeUsed = SuggestingServices.canUseSuggestion(suggestedMenu);
+            const suggestedMenu = SuggestionServices.suggestedMenu;
+            const canSuggestionBeUsed = SuggestionServices.canUseSuggestion();
 
-            console.log(' suggestedMenu: ', suggestedMenu);
+
+            console.log(' - recommended: ', suggestedMenu);
+
 
             if (!canSuggestionBeUsed) {
                 return <AddMoreMealsInfo
@@ -49,7 +56,7 @@ export default function MainPage(props: props) {
                             buttonStyle={AppStyles.commonStyles.suggestButton}
                             titleStyle={AppStyles.textStyles.suggestButtonTitle}
                             onPress={() => {
-                                // TODO: new suggestion
+                                SuggestionServices.suggestedNewMenu();
                             }}
                         />
                     </View>

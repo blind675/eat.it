@@ -3,7 +3,7 @@ import {View} from "react-native";
 import {Cell} from "./Cell";
 import AppStyles from "../styles/AppStyles";
 import TimeServices from "../services/TimeServices";
-import {SuggestedMenu} from "../services/SuggestingServices";
+import {SuggestedMenu} from "../services/SuggestionServices";
 
 type props = {
     suggestedMenu: SuggestedMenu
