@@ -35,6 +35,11 @@ class TimeServices {
 
         return Math.floor((Date.UTC(date2.getFullYear(), date2.getMonth(), date2.getDate()) - Date.UTC(date1.getFullYear(), date1.getMonth(), date1.getDate()) ) /(1000 * 60 * 60 * 24));
     }
+
+    static printTimeStamp(timestamp: number) {
+        const date = new Date(timestamp);
+        return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
+    }
 }
 
 export default TimeServices;

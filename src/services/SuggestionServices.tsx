@@ -137,6 +137,8 @@ class SuggestionServices {
 
         this._instance._suggestNewMenu();
 
+        // TODO: clear this so i can use AsyncStorage again
+
         if (SuggestionServices.canUseSuggestion()) {
             const jsonValue = JSON.stringify(this._instance._recommendMenu)
             AsyncStorage.setItem(Keys.recommendedMenu, jsonValue)

@@ -7,6 +7,7 @@ const dimensions = {
 
     marginGeneral: 16,
     marginSmall: 8,
+    marginTiny: 4,
 
     headerHeight: 80,
 
@@ -30,6 +31,9 @@ const dimensions = {
 
     checkBoxHeight: 50,
     checkBoxWidth: 150,
+
+    iconHeight: 12,
+    iconWidth: 12,
 }
 
 const colors = {
@@ -79,6 +83,11 @@ const _baseStyles = StyleSheet.create({
         borderWidth: 1,
         borderColor: colors.darkLiver,
     },
+    icon: {
+        width: dimensions.iconWidth,
+        height: dimensions.iconHeight,
+        margin: dimensions.marginTiny
+    }
 });
 
 const _baseFontStyles = StyleSheet.create({
@@ -170,6 +179,9 @@ class AppStyles {
             },
             row: {
               ..._baseStyles.row,
+            },
+            icon: {
+              ..._baseStyles.icon,
             },
             headerContainer: {
                 alignSelf: 'stretch',
@@ -278,6 +290,11 @@ class AppStyles {
                 ..._baseStyles.button,
                 width: dimensions.deleteButtonWidth,
                 backgroundColor: colors.red,
+            },
+            iconAndDateRow: {
+                alignItems: 'center',
+                justifyContent: 'flex-end',
+                paddingHorizontal: dimensions.paddingGeneral,
             }
         });
     }
