@@ -9,7 +9,7 @@ class SuggestionServices {
 
     _recommendMenu: Array<FoodEntity | undefined> = [];
 
-    _lockedMeals: boolean[] = [false,false,false,false,false];
+    _lockedMeals: boolean[] = [false, false, false, false, false];
 
     _recommendFoodForCategory(category: string) {
         const foods = DBServices.foodList;
@@ -78,22 +78,29 @@ class SuggestionServices {
     _suggestNewMenu() {
 
         SuggestionServices._instance._recommendMenu = [
-            this._suggestMealForCategoryAndIndex('breakfast',0),
-            this._suggestMealForCategoryAndIndex('snack',1),
-            this._suggestMealForCategoryAndIndex('lunch',2),
-            this._suggestMealForCategoryAndIndex('snack',3),
-            this._suggestMealForCategoryAndIndex('supper',4)
+            this._suggestMealForCategoryAndIndex('breakfast', 0),
+            this._suggestMealForCategoryAndIndex('snack', 1),
+            this._suggestMealForCategoryAndIndex('lunch', 2),
+            this._suggestMealForCategoryAndIndex('snack', 3),
+            this._suggestMealForCategoryAndIndex('supper', 4)
         ];
     }
 
     _updateTheDataBaseWithTimestamp() {
-        if(!SuggestionServices._instance._recommendMenu.includes(undefined)) {
+        if (!SuggestionServices._instance._recommendMenu.includes(undefined)) {
             SuggestionServices._instance._recommendMenu.forEach((food) => {
                 food!.lastEatTimestamp = food!.suggestedTimeStamp;
 
                 if (!food!.startEatTimestamp || TimeServices.daysDifferenceBetweenTimestamp(food!.startEatTimestamp, food!.suggestedTimeStamp!) > food!.consecutiveDays) {
                     food!.startEatTimestamp = food!.suggestedTimeStamp;
                 }
+
+                if (food!.timesEaten) {
+                    food!.timesEaten = food!.timesEaten + 1;
+                } else {
+                    food!.timesEaten = 0;
+                }
+
 
                 DBServices.updateFood(food!);
             });
@@ -103,9 +110,9 @@ class SuggestionServices {
     _didTheDayPassed() {
 
         let menuSuggestedTimeStamp = Date.now();
-        if(!SuggestionServices._instance._recommendMenu.includes(undefined)) {
+        if (!SuggestionServices._instance._recommendMenu.includes(undefined)) {
             for (let index = 0; index < SuggestionServices._instance._recommendMenu.length; index++) {
-                if(SuggestionServices._instance._recommendMenu[index]) {
+                if (SuggestionServices._instance._recommendMenu[index]) {
                     menuSuggestedTimeStamp = SuggestionServices._instance._recommendMenu[index]!.suggestedTimeStamp!;
                     break;
                 }
@@ -126,13 +133,17 @@ class SuggestionServices {
     static get suggestedMenu() {
         const recommendations: FoodEntity[] = []
 
-        this._instance._recommendMenu.forEach((food) => {
-            if(food)  {
-                recommendations.push(food);
-            }
+        if (this._instance._recommendMenu) {
 
-            return [];
-        });
+            this._instance._recommendMenu.forEach((food) => {
+                if (food) {
+                    recommendations.push(food);
+                }
+
+                return [];
+            });
+        }
+
         return recommendations;
     }
 
@@ -146,7 +157,7 @@ class SuggestionServices {
     }
 
     static resetLockedMeals() {
-        this._instance._lockedMeals = [false,false,false,false,false];
+        this._instance._lockedMeals = [false, false, false, false, false];
     }
 
     static loadSuggestedMenu() {
@@ -163,7 +174,7 @@ class SuggestionServices {
 
         console.log(' **** SuggestedNewMenu **** ');
 
-        if (!this._instance._recommendMenu.includes(undefined) && this._instance._didTheDayPassed()) {
+        if (this._instance._recommendMenu && !this._instance._recommendMenu.includes(undefined) && this._instance._didTheDayPassed()) {
             this._instance._updateTheDataBaseWithTimestamp();
         }
 
@@ -187,15 +198,20 @@ class SuggestionServices {
 
     static canUseSuggestion() {
 
-        let canUse = true;
+        if (this._instance._recommendMenu) {
+            let canUse = true;
 
-        SuggestionServices._instance._recommendMenu.forEach((item) => {
-            if (!item) {
-                canUse = false;
-            }
-        });
+            this._instance._recommendMenu.forEach((item) => {
+                if (!item) {
+                    canUse = false;
+                }
+            });
 
-        return canUse;
+            return canUse;
+        }
+
+        return false;
+
     }
 }
 

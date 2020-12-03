@@ -38,7 +38,7 @@ export default function MainPage(props: props) {
 
     // Hack to force a rerender.
     // Didn't want to use state libs like Redux or Mobx
-    // TODO: I really need to use a state manager
+    // TODO: I really need to use a state manager !!!! THIS
     const isFocused = useIsFocused();
 
     const renderSuggestedMenu = () => {
@@ -78,6 +78,8 @@ export default function MainPage(props: props) {
         }
 
     }
+
+    console.log(` *** MainPage render `);
 
     // TODO: add ad at the bottom of the screen
 

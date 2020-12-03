@@ -25,6 +25,12 @@ export default function AddFoodPage(props: props) {
     const [consecutiveDays, setConsecutiveDays] = React.useState(item.consecutiveDays || 1);
     const [coolDownDays, setCoolDownDays] = React.useState(item.coolDownDays || 0);
 
+    const suggestMenuAndGoBack = () => {
+        SuggestionServices.resetLockedMeals();
+        SuggestionServices.suggestedNewMenu();
+        props.navigation.goBack();
+    }
+
     const handle_saveButtonPressed = () => {
 
         if (foodName === '') {
@@ -50,13 +56,11 @@ export default function AddFoodPage(props: props) {
 
         if (foodItemToSave.id) {
             DBServices.updateFood(foodItemToSave, () => {
-                SuggestionServices.suggestedNewMenu();
-                props.navigation.goBack();
+                suggestMenuAndGoBack();
             });
         } else {
             DBServices.insertFood(foodItemToSave, () => {
-                SuggestionServices.suggestedNewMenu();
-                props.navigation.goBack();
+                suggestMenuAndGoBack();
             });
         }
 
@@ -76,8 +80,7 @@ export default function AddFoodPage(props: props) {
                 {
                     text: 'YES',
                     onPress: () => DBServices.deleteFood(item, () => {
-                        SuggestionServices.suggestedNewMenu();
-                        props.navigation.goBack();
+                        suggestMenuAndGoBack();
                     })
                 },
             ]

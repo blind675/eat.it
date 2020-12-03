@@ -14,6 +14,7 @@ export type FoodEntity = {
     lastEatTimestamp?: number,
     startEatTimestamp?: number,
     suggestedTimeStamp?: number,
+    timesEaten?: number,
 };
 
 class DBServices {
@@ -24,6 +25,7 @@ class DBServices {
     foods: FoodEntity[];
 
     constructor() {
+        // TODO: use counter how many times the meal was eaten - increase DB version
         this.db = SQLite.openDatabase(DB.name, DB.version);
         this.foods = [];
     }
@@ -49,6 +51,8 @@ class DBServices {
                     (_, results) => {
                         const DBRowCount = results.rows.length;
 
+                        console.log(' - results.rows:', results.rows);
+
                         for (let i = 0; i < DBRowCount; i++) {
                             const item = results.rows.item(i);
                             const food: FoodEntity = {
@@ -61,7 +65,8 @@ class DBServices {
                                 coolDownDays: item.cool_down_days,
                                 consecutiveDays: item.consecutive_days,
                                 lastEatTimestamp: item.last_eat_timestamp,
-                                startEatTimestamp: item.start_eat_timestamp
+                                startEatTimestamp: item.start_eat_timestamp,
+                                timesEaten: item.times_eaten
                             }
                             this.foods.push(food);
                         }
@@ -100,7 +105,7 @@ class DBServices {
         this.db.transaction((tx) => {
             tx.executeSql(
                 DB.queries.update,
-                [food.foodName, food.isBreakfast, food.isSnack, food.isLunch, food.isSupper, food.coolDownDays, food.consecutiveDays, food.lastEatTimestamp, food.startEatTimestamp, food.id],
+                [food.foodName, food.isBreakfast, food.isSnack, food.isLunch, food.isSupper, food.coolDownDays, food.consecutiveDays, food.lastEatTimestamp, food.startEatTimestamp, food.timesEaten, food.id],
                 (tx, results) => {
                     this._updateFoodInLocalStore(food);
                     callback && callback();

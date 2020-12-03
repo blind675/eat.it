@@ -3,6 +3,8 @@ import {Text, TouchableOpacity, View} from "react-native";
 import {MaterialIcons} from '@expo/vector-icons';
 import {NavigationScreenProp} from "react-navigation";
 import AppStyles from "../styles/AppStyles";
+import DBServices from "../services/DBServices";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 type props = {
@@ -18,9 +20,17 @@ export default function PageHeader(props: props) {
     const drawRightIcon = () => {
         if (props.onPress) {
             return (
-                <TouchableOpacity onPress={props.onPress}>
-                    <MaterialIcons name={iconName} size={30} color="white"/>
-                </TouchableOpacity>
+                <>
+                    <TouchableOpacity onPress={() => {
+                        AsyncStorage.clear();
+                        DBServices.drop();
+                    }}>
+                        <MaterialIcons name="delete-forever" size={30} color="white"/>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={props.onPress}>
+                        <MaterialIcons name={iconName} size={30} color="white"/>
+                    </TouchableOpacity>
+                </>
             );
         } else {
             return (<View style={{height: 45, width: 45}}/>)
