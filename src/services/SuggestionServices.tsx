@@ -3,7 +3,7 @@ import DBServices, {FoodEntity} from "./DBServices";
 import TimeServices from "./TimeServices";
 import {Keys} from "../Constants";
 
-export type SuggestedMenu = FoodEntity[];
+export type SuggestedMenu = Array<FoodEntity | undefined>;
 
 class SuggestionServices {
 
@@ -83,24 +83,28 @@ class SuggestionServices {
     }
 
     _updateTheDataBaseWithTimestamp() {
-        SuggestionServices._instance._recommendMenu.forEach((food) => {
-            food.lastEatTimestamp = food.suggestedTimeStamp;
+        if(!SuggestionServices._instance._recommendMenu.includes(undefined)) {
+            SuggestionServices._instance._recommendMenu.forEach((food) => {
+                food!.lastEatTimestamp = food!.suggestedTimeStamp;
 
-            if (!food.startEatTimestamp || TimeServices.daysDifferenceBetweenTimestamp(food.startEatTimestamp, food.suggestedTimeStamp!) > food.consecutiveDays) {
-                food.startEatTimestamp = food.suggestedTimeStamp;
-            }
+                if (!food!.startEatTimestamp || TimeServices.daysDifferenceBetweenTimestamp(food!.startEatTimestamp, food!.suggestedTimeStamp!) > food!.consecutiveDays) {
+                    food!.startEatTimestamp = food!.suggestedTimeStamp;
+                }
 
-            DBServices.updateFood(food);
-        });
+                DBServices.updateFood(food!);
+            });
+        }
     }
 
     _didTheDayPassed() {
 
-        let menuSuggestedTimeStamp = 0;
-        for (let index = 0; index < SuggestionServices._instance._recommendMenu.length; index++) {
-            if(SuggestionServices._instance._recommendMenu[index]) {
-                menuSuggestedTimeStamp = SuggestionServices._instance._recommendMenu[index].suggestedTimeStamp!;
-                break;
+        let menuSuggestedTimeStamp = Date.now();
+        if(!SuggestionServices._instance._recommendMenu.includes(undefined)) {
+            for (let index = 0; index < SuggestionServices._instance._recommendMenu.length; index++) {
+                if(SuggestionServices._instance._recommendMenu[index]) {
+                    menuSuggestedTimeStamp = SuggestionServices._instance._recommendMenu[index]!.suggestedTimeStamp!;
+                    break;
+                }
             }
         }
 
@@ -131,14 +135,18 @@ class SuggestionServices {
 
     static suggestedNewMenu() {
 
-        if (this._instance._recommendMenu && this._instance._didTheDayPassed()) {
+        console.log(' **** SuggestedNewMenu **** ');
+
+        if (!this._instance._recommendMenu.includes(undefined) && this._instance._didTheDayPassed()) {
             this._instance._updateTheDataBaseWithTimestamp();
         }
 
         this._instance._suggestNewMenu();
 
-        // TODO: clear this so i can use AsyncStorage again
+        // clear this so i can use AsyncStorage again
+        // AsyncStorage.clear();
 
+        // TODO: should I delete this if?
         if (SuggestionServices.canUseSuggestion()) {
             const jsonValue = JSON.stringify(this._instance._recommendMenu)
             AsyncStorage.setItem(Keys.recommendedMenu, jsonValue)

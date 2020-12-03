@@ -7,13 +7,13 @@ type props = {
     message: string
 }
 
-const AddMoreMealsInfo = function(props:props) {
+const AddMoreMealsInfo = function (props: props) {
     return (
         <>
-            <View style={{ flexDirection: 'row-reverse', }}>
-                <MaterialIcons name="arrow-upward" size={80} color={AppStyles.colors.red} />
+            <View style={{flexDirection: 'row-reverse',}}>
+                <MaterialIcons name="arrow-upward" size={80} color={AppStyles.colors.red}/>
             </View>
-            <View style={AppStyles.commonStyles.container}>
+            <View style={[AppStyles.commonStyles.container, {paddingHorizontal: AppStyles.dimensions.paddingGeneral}]}>
                 <Text style={AppStyles.textStyles.notEnoughMealsText}>{props.message}</Text>
             </View>
         </>

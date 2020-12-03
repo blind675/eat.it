@@ -2,12 +2,14 @@ import React, {useState} from "react";
 import {Text, TouchableOpacity} from "react-native";
 import {MaterialIcons} from '@expo/vector-icons';
 import AppStyles from "../styles/AppStyles";
+import {Icon} from "./Icon";
 
 
 type props = {
     title: string,
     onPress: (selected: boolean) => void
     selected?: boolean,
+    iconSource?: {},
 }
 
 const CheckBox = function (props: props) {
@@ -29,6 +31,7 @@ const CheckBox = function (props: props) {
                 style={selected ? AppStyles.textStyles.selectedCheckBoxText : AppStyles.textStyles.unselectedCheckBoxText}>
                 {props.title}
             </Text>
+            {props.iconSource && <Icon source={props.iconSource!} color={selected ? AppStyles.colors.white : AppStyles.colors.gray}/>}
         </TouchableOpacity>
     );
 }

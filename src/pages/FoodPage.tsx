@@ -29,10 +29,10 @@ export default function FoodPage(props: props) {
 
         return(
             <View style={AppStyles.commonStyles.row}>
-                {isBreakfast ? <Icon source={require('../../assets/img/breakfast.png')}/> : <View style={AppStyles.commonStyles.icon}/>}
-                {isSnack ? <Icon source={require('../../assets/img/snack.png')}/> : <View style={AppStyles.commonStyles.icon}/>}
-                {isLunch ? <Icon source={require('../../assets/img/lunch.png')}/> : <View style={AppStyles.commonStyles.icon}/>}
-                {isSupper ? <Icon source={require('../../assets/img/supper.png')}/> : <View style={AppStyles.commonStyles.icon}/>}
+                {isBreakfast ? <Icon source={require('../../assets/img/breakfast.png')} color={AppStyles.colors.black}/> : <View style={AppStyles.commonStyles.icon}/>}
+                {isSnack ? <Icon source={require('../../assets/img/snack.png')} color={AppStyles.colors.black}/> : <View style={AppStyles.commonStyles.icon}/>}
+                {isLunch ? <Icon source={require('../../assets/img/lunch.png')} color={AppStyles.colors.black}/> : <View style={AppStyles.commonStyles.icon}/>}
+                {isSupper ? <Icon source={require('../../assets/img/supper.png')} color={AppStyles.colors.black}/> : <View style={AppStyles.commonStyles.icon}/>}
             </View>
         );
     }

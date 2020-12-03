@@ -9,6 +9,7 @@ import DBServices from "../services/DBServices";
 import {Pages} from "../Constants";
 import SuggestionServices from "../services/SuggestionServices";
 import {AddMoreMealsInfo} from "../components/AddMoreMealsInfo";
+import {useIsFocused} from "@react-navigation/native";
 
 type props = {
     navigation: NavigationScreenProp<object>
@@ -33,14 +34,17 @@ export default function MainPage(props: props) {
         });
     }, [])
 
+    // Hack to force a rerender.
+    // Didn't want to use state libs like Redux or Mobx
+    // TODO: I really need to use a state manager
+    const isFocused = useIsFocused();
+
     const renderSuggestedMenu = () => {
         if (foodsInDB) {
             const suggestedMenu = SuggestionServices.suggestedMenu;
             const canSuggestionBeUsed = SuggestionServices.canUseSuggestion();
 
-
             console.log(' - recommended: ', suggestedMenu);
-
 
             if (!canSuggestionBeUsed) {
                 return <AddMoreMealsInfo
@@ -67,6 +71,8 @@ export default function MainPage(props: props) {
         }
 
     }
+
+    // TODO: add ad at the bottom of the screen
 
     return (
         <View style={AppStyles.commonStyles.appContainer}>

@@ -7,6 +7,7 @@ import PageHeader from "../components/PageHeader";
 import {Button} from "../components/Button";
 import {CheckBox} from "../components/CheckBox";
 import DBServices, {FoodEntity} from "../services/DBServices";
+import SuggestionServices from "../services/SuggestionServices";
 
 type props = {
     navigation: NavigationScreenProp<object>
@@ -48,9 +49,15 @@ export default function AddFoodPage(props: props) {
         }
 
         if (foodItemToSave.id) {
-            DBServices.updateFood(foodItemToSave, () => props.navigation.goBack());
+            DBServices.updateFood(foodItemToSave, () => {
+                SuggestionServices.suggestedNewMenu();
+                props.navigation.goBack();
+            });
         } else {
-            DBServices.insertFood(foodItemToSave, () => props.navigation.goBack());
+            DBServices.insertFood(foodItemToSave, () => {
+                SuggestionServices.suggestedNewMenu();
+                props.navigation.goBack();
+            });
         }
 
     }
@@ -68,7 +75,10 @@ export default function AddFoodPage(props: props) {
                 },
                 {
                     text: 'YES',
-                    onPress: () => DBServices.deleteFood(item, () => props.navigation.goBack())
+                    onPress: () => DBServices.deleteFood(item, () => {
+                        SuggestionServices.suggestedNewMenu();
+                        props.navigation.goBack();
+                    })
                 },
             ]
         );
@@ -94,21 +104,25 @@ export default function AddFoodPage(props: props) {
                     <CheckBox
                         title='Breakfast'
                         selected={isBreakfast}
-                        onPress={(selected) => setIsBreakfast(selected)}/>
+                        onPress={(selected) => setIsBreakfast(selected)}
+                        iconSource={require('../../assets/img/breakfast.png')}/>
                     <CheckBox
                         title='Snack'
                         selected={isSnack}
-                        onPress={(selected) => setIsSnack(selected)}/>
+                        onPress={(selected) => setIsSnack(selected)}
+                        iconSource={require('../../assets/img/snack.png')}/>
                 </View>
                 <View style={AppStyles.commonStyles.row}>
                     <CheckBox
                         title='Lunch'
                         selected={isLunch}
-                        onPress={(selected) => setIsLunch(selected)}/>
+                        onPress={(selected) => setIsLunch(selected)}
+                        iconSource={require('../../assets/img/lunch.png')}/>
                     <CheckBox
                         title='Supper'
                         selected={isSupper}
-                        onPress={(selected) => setIsSupper(selected)}/>
+                        onPress={(selected) => setIsSupper(selected)}
+                        iconSource={require('../../assets/img/supper.png')}/>
                 </View>
             </View>
 

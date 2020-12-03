@@ -30,7 +30,7 @@ const dimensions = {
     textInputHeight: 40,
 
     checkBoxHeight: 50,
-    checkBoxWidth: 150,
+    checkBoxWidth: 175,
 
     iconHeight: 12,
     iconWidth: 12,
@@ -113,6 +113,11 @@ class AppStyles {
     // @ts-ignore
     static get colors() {
         return colors;
+    }
+
+    // @ts-ignore
+    static get dimensions() {
+        return dimensions;
     }
 
     // @ts-ignore

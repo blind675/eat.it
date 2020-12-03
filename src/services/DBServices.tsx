@@ -168,15 +168,15 @@ class DBServices {
         return this._instance._load(callback);
     }
 
-    static insertFood(food: FoodEntity, callback?: () => {}) {
+    static insertFood(food: FoodEntity, callback?: () => void) {
         return this._instance._insert(food, callback);
     }
 
-    static updateFood(food: FoodEntity, callback?: () => {}) {
+    static updateFood(food: FoodEntity, callback?: () => void) {
         return this._instance._update(food, callback);
     }
 
-    static deleteFood(food: FoodEntity, callback?: () => {}) {
+    static deleteFood(food: FoodEntity, callback?: () => void) {
         return this._instance._delete(food, callback);
     }
 
