@@ -10,12 +10,13 @@ type props = {
     onPress?: (locked: boolean) => void,
     selected?: boolean,
     titleTextStyle?: object,
+    locked?: boolean,
 }
 
 const Cell = function (props: props) {
     const cellSelectedText = props.selected ? AppStyles.textStyles.cellSelectedText : {color: AppStyles.colors.black};
 
-    const [isLocked, setIsLocked] = useState(false);
+    const [isLocked, setIsLocked] = useState(props.locked|| false);
 
     return (<Card selected={props.selected}>
         <View style={AppStyles.commonStyles.cellHeaderContainer}>

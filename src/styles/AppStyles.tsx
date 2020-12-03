@@ -1,171 +1,170 @@
 import {StyleSheet} from 'react-native';
 
-const dimensions = {
-
-    paddingGeneral: 16,
-    paddingSmall: 8,
-
-    marginGeneral: 16,
-    marginSmall: 8,
-    marginTiny: 4,
-
-    headerHeight: 80,
-
-    headerPaddingTop: 35,
-
-    suggestButtonContainersHeight: 80,
-    suggestButtonContainersTopMargin: 20,
-    suggestButtonContainersBottomMargin: 20,
-    suggestButtonWidth: 300,
-    suggestButtonHeight: 65,
-
-    buttonWidth: 200,
-    buttonHeight: 50,
-    deleteButtonWidth: 75,
-
-    foodListRowHeight: 60,
-
-    displayMenuRowHeight: 110,
-
-    textInputHeight: 40,
-
-    checkBoxHeight: 50,
-    checkBoxWidth: 175,
-
-    iconHeight: 12,
-    iconWidth: 12,
-}
-
-const colors = {
-    white: '#FFFFFF',
-    green: '#293132',       // white
-    blue: '#547AA5',        // white
-    red: '#C8331F',
-    gray: '#4F5165',        // white
-    darkLiver: '#474044',   // white
-    turquoise: '#50D8D7',   // black
-    black: '#0A0A0A',
-
-}
-
-const font = {
-    sizeNormal: 16,
-    sizeMedium: 18,
-    sizeBig: 22,
-    sizeHeader: 26,
-    sizeCellTitle: 18,
-    sizeButton: 20,
-    sizeSuggestButton: 23,
-}
-
-const _baseStyles = StyleSheet.create({
-    checkBox: {
-        height: dimensions.checkBoxHeight,
-        width: dimensions.checkBoxWidth,
-        paddingHorizontal: dimensions.paddingGeneral,
-        margin: dimensions.marginSmall,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderRadius: 4,
-    },
-    row: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    button: {
-        width: dimensions.buttonWidth,
-        height: dimensions.buttonHeight,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: colors.blue,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: colors.darkLiver,
-    },
-    icon: {
-        width: dimensions.iconWidth,
-        height: dimensions.iconHeight,
-        margin: dimensions.marginTiny
-    }
-});
-
-const _baseFontStyles = StyleSheet.create({
-    text: {
-        fontSize: font.sizeNormal,
-        color: colors.black,
-    },
-    checkBoxText: {
-        textAlign: 'left',
-        fontSize: font.sizeNormal,
-    },
-});
-
-//TODO: make singleton ??
-
-
 class AppStyles {
 
-    static init() {
-        //TODO: load color and font size from user defaults
+    static _instance = new AppStyles();
+
+    dimensions = {
+        paddingGeneral: 16,
+        paddingSmall: 8,
+
+        marginGeneral: 16,
+        marginSmall: 8,
+        marginTiny: 4,
+
+        headerHeight: 80,
+
+        headerPaddingTop: 35,
+
+        suggestButtonContainersHeight: 80,
+        suggestButtonContainersTopMargin: 20,
+        suggestButtonContainersBottomMargin: 20,
+        suggestButtonWidth: 300,
+        suggestButtonHeight: 65,
+
+        buttonWidth: 200,
+        buttonHeight: 50,
+        deleteButtonWidth: 75,
+
+        foodListRowHeight: 60,
+
+        displayMenuRowHeight: 110,
+
+        textInputHeight: 40,
+
+        checkBoxHeight: 50,
+        checkBoxWidth: 175,
+
+        iconHeight: 12,
+        iconWidth: 12,
     }
+
+    colors = {
+        white: '#FFFFFF',
+        green: '#293132',       // white
+        blue: '#547AA5',        // white
+        red: '#C8331F',
+        gray: '#4F5165',        // white
+        darkLiver: '#474044',   // white
+        turquoise: '#50D8D7',   // black
+        black: '#0A0A0A',
+
+    }
+
+    font = {
+        sizeNormal: 16,
+        sizeMedium: 18,
+        sizeBig: 22,
+        sizeHeader: 26,
+        sizeCellTitle: 18,
+        sizeButton: 20,
+        sizeSuggestButton: 23,
+    }
+
+    _baseStyles = StyleSheet.create({
+        checkBox: {
+            height: this.dimensions.checkBoxHeight,
+            width: this.dimensions.checkBoxWidth,
+            paddingHorizontal: this.dimensions.paddingGeneral,
+            margin: this.dimensions.marginSmall,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            borderRadius: 4,
+        },
+        row: {
+            flexDirection: 'row',
+            alignItems: 'center',
+        },
+        button: {
+            width: this.dimensions.buttonWidth,
+            height: this.dimensions.buttonHeight,
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: this.colors.blue,
+            borderRadius: 10,
+            borderWidth: 1,
+            borderColor: this.colors.darkLiver,
+        },
+        icon: {
+            width: this.dimensions.iconWidth,
+            height: this.dimensions.iconHeight,
+            margin: this.dimensions.marginTiny
+        }
+    });
+
+    _baseFontStyles = StyleSheet.create({
+        text: {
+            fontSize: this.font.sizeNormal,
+            color: this.colors.black,
+        },
+        checkBoxText: {
+            textAlign: 'left',
+            fontSize: this.font.sizeNormal,
+        },
+    });
 
     // @ts-ignore
     static get colors() {
-        return colors;
+        return this._instance.colors;
     }
 
     // @ts-ignore
     static get dimensions() {
-        return dimensions;
+        return this._instance.dimensions;
+    }
+
+    // @ts-ignore
+    static get font() {
+        return this._instance.font;
     }
 
     // @ts-ignore
     static get textStyles() {
         return StyleSheet.create({
             text: {
-                ..._baseFontStyles.text
+                ...AppStyles._instance._baseFontStyles.text
             },
             headerSmall: {
-                fontSize: font.sizeMedium,
-                color: colors.darkLiver
+                fontSize: AppStyles.font.sizeMedium,
+                color: AppStyles.colors.darkLiver
             },
             headerTitle: {
-                fontSize: font.sizeHeader,
-                color: colors.white,
+                fontSize: AppStyles.font.sizeHeader,
+                color: AppStyles.colors.white,
                 fontWeight: 'bold'
             },
             suggestButtonTitle: {
-                fontSize: font.sizeSuggestButton,
+                fontSize: AppStyles.font.sizeSuggestButton,
             },
             buttonTitle: {
-                fontSize: font.sizeButton,
+                fontSize: AppStyles.font.sizeButton,
                 fontWeight: 'bold',
-                color: colors.white,
+                color: AppStyles.colors.white,
             },
             cellTitle: {
-                fontSize: font.sizeCellTitle,
+                fontSize: AppStyles.font.sizeCellTitle,
                 fontWeight: 'bold',
-                color: colors.black,
+                color: AppStyles.colors.black,
             },
             cellMainTitle: {
-                fontSize: font.sizeBig,
+                fontSize: AppStyles.font.sizeBig,
             },
             cellSelectedText: {
-                color: colors.white
+                color: AppStyles.colors.white
             },
             selectedCheckBoxText: {
-                color: colors.white,
-                ..._baseFontStyles.checkBoxText,
+                color: AppStyles.colors.white,
+                ...AppStyles._instance._baseFontStyles.checkBoxText,
             },
             unselectedCheckBoxText: {
-                color: colors.gray,
-                ..._baseFontStyles.checkBoxText,
+                color: AppStyles.colors.gray,
+                ...AppStyles._instance._baseFontStyles.checkBoxText,
             },
             notEnoughMealsText: {
-                fontSize: font.sizeMedium,
+                fontSize: AppStyles.font.sizeMedium,
                 fontWeight: 'bold',
-                color: colors.red,
+                color: AppStyles.colors.red,
             }
         });
     }
@@ -183,52 +182,52 @@ class AppStyles {
                 justifyContent: 'center',
             },
             row: {
-              ..._baseStyles.row,
+                ...AppStyles._instance._baseStyles.row,
             },
             icon: {
-              ..._baseStyles.icon,
+                ...AppStyles._instance._baseStyles.icon,
             },
             headerContainer: {
                 alignSelf: 'stretch',
-                height: dimensions.headerHeight,
-                paddingTop: dimensions.headerPaddingTop,
-                paddingHorizontal: dimensions.paddingGeneral,
-                backgroundColor: colors.green,
+                height: AppStyles.dimensions.headerHeight,
+                paddingTop: AppStyles.dimensions.headerPaddingTop,
+                paddingHorizontal: AppStyles.dimensions.paddingGeneral,
+                backgroundColor: AppStyles.colors.green,
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'space-between',
             },
             suggestButtonContainers: {
-                height: dimensions.suggestButtonContainersHeight,
-                paddingVertical: dimensions.paddingGeneral,
-                marginTop: dimensions.suggestButtonContainersTopMargin,
-                marginBottom: dimensions.suggestButtonContainersBottomMargin,
+                height: AppStyles.dimensions.suggestButtonContainersHeight,
+                paddingVertical: AppStyles.dimensions.paddingGeneral,
+                marginTop: AppStyles.dimensions.suggestButtonContainersTopMargin,
+                marginBottom: AppStyles.dimensions.suggestButtonContainersBottomMargin,
                 alignItems: 'center',
                 justifyContent: 'space-evenly',
                 flexDirection: 'row',
             },
             suggestButton: {
-                width: dimensions.suggestButtonWidth,
-                height: dimensions.suggestButtonHeight,
+                width: AppStyles.dimensions.suggestButtonWidth,
+                height: AppStyles.dimensions.suggestButtonHeight,
                 borderRadius: 20,
             },
             button: {
-                ..._baseStyles.button,
+                ...AppStyles._instance._baseStyles.button,
             },
             card: {
                 flex: 1,
                 alignSelf: 'stretch',
-                marginHorizontal: dimensions.marginSmall,
-                marginTop: dimensions.marginSmall,
-                padding: dimensions.paddingGeneral,
+                marginHorizontal: AppStyles.dimensions.marginSmall,
+                marginTop: AppStyles.dimensions.marginSmall,
+                padding: AppStyles.dimensions.paddingGeneral,
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 10,
                 borderWidth: 1,
-                borderColor: colors.darkLiver,
+                borderColor: AppStyles.colors.darkLiver,
             },
             cardSelected: {
-                backgroundColor: colors.gray
+                backgroundColor: AppStyles.colors.gray
             },
             cellHeaderContainer: {
                 alignSelf: 'stretch',
@@ -244,62 +243,62 @@ class AppStyles {
             },
             displayMenuRow: {
                 flexDirection: 'row',
-                height: dimensions.displayMenuRowHeight,
+                height: AppStyles.dimensions.displayMenuRowHeight,
                 alignSelf: 'stretch',
                 justifyContent: 'center',
             },
             foodListRow: {
-                height: dimensions.foodListRowHeight,
-                padding: dimensions.paddingSmall,
-                paddingLeft: dimensions.paddingGeneral,
-                marginLeft: dimensions.marginSmall,
+                height: AppStyles.dimensions.foodListRowHeight,
+                padding: AppStyles.dimensions.paddingSmall,
+                paddingLeft: AppStyles.dimensions.paddingGeneral,
+                marginLeft: AppStyles.dimensions.marginSmall,
                 flexDirection: 'row',
                 alignSelf: 'stretch',
                 justifyContent: 'space-between',
                 alignItems: 'center',
                 borderBottomWidth: 1,
-                borderBottomColor: colors.darkLiver,
+                borderBottomColor: AppStyles.colors.darkLiver,
             },
             foodInputSection: {
-                padding: dimensions.paddingGeneral,
+                padding: AppStyles.dimensions.paddingGeneral,
             },
             foodNameInput: {
-                fontSize: font.sizeNormal,
-                height: dimensions.textInputHeight,
-                marginTop: dimensions.marginSmall,
-                paddingLeft: dimensions.paddingSmall,
-                borderBottomColor: colors.darkLiver,
+                fontSize: AppStyles.font.sizeNormal,
+                height: AppStyles.dimensions.textInputHeight,
+                marginTop: AppStyles.dimensions.marginSmall,
+                paddingLeft: AppStyles.dimensions.paddingSmall,
+                borderBottomColor: AppStyles.colors.darkLiver,
                 borderBottomWidth: 1,
             },
             foodSaveSection: {
-                ..._baseStyles.row,
-                padding: dimensions.paddingGeneral,
+                ...AppStyles._instance._baseStyles.row,
+                padding: AppStyles.dimensions.paddingGeneral,
                 justifyContent: 'space-around',
             },
             selectedCheckBox: {
-                backgroundColor: colors.gray,
+                backgroundColor: AppStyles.colors.gray,
                 borderWidth: 0,
-                ..._baseStyles.checkBox,
+                ...AppStyles._instance._baseStyles.checkBox,
             },
             unselectedCheckBox: {
-                backgroundColor: colors.white,
+                backgroundColor: AppStyles.colors.white,
                 borderWidth: 1,
-                borderColor: colors.gray,
-                ..._baseStyles.checkBox,
+                borderColor: AppStyles.colors.gray,
+                ...AppStyles._instance._baseStyles.checkBox,
             },
             slider: {
                 flex: 1,
-                marginHorizontal:dimensions.marginGeneral,
+                marginHorizontal: AppStyles.dimensions.marginGeneral,
             },
             deleteButton: {
-                ..._baseStyles.button,
-                width: dimensions.deleteButtonWidth,
-                backgroundColor: colors.red,
+                ...AppStyles._instance._baseStyles.button,
+                width: AppStyles.dimensions.deleteButtonWidth,
+                backgroundColor: AppStyles.colors.red,
             },
             iconAndDateRow: {
                 alignItems: 'center',
                 justifyContent: 'flex-end',
-                paddingHorizontal: dimensions.paddingGeneral,
+                paddingHorizontal: AppStyles.dimensions.paddingGeneral,
             }
         });
     }

@@ -5,7 +5,7 @@ import PageHeader from "../components/PageHeader";
 import AppStyles from "../styles/AppStyles";
 import {Button} from "../components/Button";
 import MenuDisplay from "../components/MenuDisplay";
-import DBServices from "../services/DBServices";
+import DBServices, {FoodEntity} from "../services/DBServices";
 import {Pages} from "../Constants";
 import SuggestionServices from "../services/SuggestionServices";
 import {AddMoreMealsInfo} from "../components/AddMoreMealsInfo";
@@ -19,6 +19,8 @@ export default function MainPage(props: props) {
 
     const [dataLoaded, setDataLoaded] = useState(false);
     const [foodsInDB, setFoodsInDB] = useState(false);
+    const [reloadCount, setReloadCount] = useState(1);
+
 
     useEffect(() => {
         DBServices.loadFoods(() => {
@@ -41,10 +43,11 @@ export default function MainPage(props: props) {
 
     const renderSuggestedMenu = () => {
         if (foodsInDB) {
-            const suggestedMenu = SuggestionServices.suggestedMenu;
+            const suggestedMenu: FoodEntity[] = SuggestionServices.suggestedMenu;
+            const lockedMeals: boolean[] = SuggestionServices.lockedMeals;
             const canSuggestionBeUsed = SuggestionServices.canUseSuggestion();
 
-            console.log(' - recommended: ', suggestedMenu);
+            // console.log(' - recommended: ', suggestedMenu);
 
             if (!canSuggestionBeUsed) {
                 return <AddMoreMealsInfo
@@ -52,7 +55,10 @@ export default function MainPage(props: props) {
             } else {
                 return (<>
                     <View style={AppStyles.commonStyles.container}>
-                        <MenuDisplay suggestedMenu={suggestedMenu}/>
+                        <MenuDisplay
+                            suggestedMenu={suggestedMenu}
+                            lockedMeals={lockedMeals}
+                        />
                     </View>
                     <View style={AppStyles.commonStyles.suggestButtonContainers}>
                         <Button
@@ -61,6 +67,7 @@ export default function MainPage(props: props) {
                             titleStyle={AppStyles.textStyles.suggestButtonTitle}
                             onPress={() => {
                                 SuggestionServices.suggestedNewMenu();
+                                setReloadCount(reloadCount+1);
                             }}
                         />
                     </View>
@@ -79,7 +86,7 @@ export default function MainPage(props: props) {
             <PageHeader onPress={() => {
                 props.navigation.navigate(Pages.food)
             }}/>
-            {dataLoaded ? renderSuggestedMenu() : <View style={AppStyles.commonStyles.container}/>}
+            {reloadCount && dataLoaded ? renderSuggestedMenu() : <View style={AppStyles.commonStyles.container}/>}
             <View style={{height: 80, backgroundColor: 'red'}}/>
         </View>
     );

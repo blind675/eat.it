@@ -3,13 +3,13 @@ import DBServices, {FoodEntity} from "./DBServices";
 import TimeServices from "./TimeServices";
 import {Keys} from "../Constants";
 
-export type SuggestedMenu = Array<FoodEntity | undefined>;
-
 class SuggestionServices {
 
     static _instance = new SuggestionServices();
 
-    _recommendMenu: SuggestedMenu = [];
+    _recommendMenu: Array<FoodEntity | undefined> = [];
+
+    _lockedMeals: boolean[] = [false,false,false,false,false];
 
     _recommendFoodForCategory(category: string) {
         const foods = DBServices.foodList;
@@ -71,14 +71,18 @@ class SuggestionServices {
         return recommendedMeal;
     }
 
+    _suggestMealForCategoryAndIndex(category: string, index: number) {
+        return this._lockedMeals[index] ? this._recommendMenu[index] : SuggestionServices._instance._recommendFoodForCategory(category);
+    }
+
     _suggestNewMenu() {
 
         SuggestionServices._instance._recommendMenu = [
-            SuggestionServices._instance._recommendFoodForCategory('breakfast'), // breakfast
-            SuggestionServices._instance._recommendFoodForCategory('snack'),
-            SuggestionServices._instance._recommendFoodForCategory('lunch'),
-            SuggestionServices._instance._recommendFoodForCategory('snack'),
-            SuggestionServices._instance._recommendFoodForCategory('supper')
+            this._suggestMealForCategoryAndIndex('breakfast',0),
+            this._suggestMealForCategoryAndIndex('snack',1),
+            this._suggestMealForCategoryAndIndex('lunch',2),
+            this._suggestMealForCategoryAndIndex('snack',3),
+            this._suggestMealForCategoryAndIndex('supper',4)
         ];
     }
 
@@ -114,13 +118,35 @@ class SuggestionServices {
     }
 
     // @ts-ignore
+    static get lockedMeals() {
+        return this._instance._lockedMeals;
+    }
+
+    // @ts-ignore
     static get suggestedMenu() {
-        return this._instance._recommendMenu;
+        const recommendations: FoodEntity[] = []
+
+        this._instance._recommendMenu.forEach((food) => {
+            if(food)  {
+                recommendations.push(food);
+            }
+
+            return [];
+        });
+        return recommendations;
     }
 
     // @ts-ignore
     static get isTheSuggestionMadeToday() {
         return !this._instance._recommendMenu || !this._instance._didTheDayPassed();
+    }
+
+    static setLockedMeals(lockedMeals: boolean[]) {
+        this._instance._lockedMeals = lockedMeals;
+    }
+
+    static resetLockedMeals() {
+        this._instance._lockedMeals = [false,false,false,false,false];
     }
 
     static loadSuggestedMenu() {
