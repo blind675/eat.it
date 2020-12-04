@@ -97,8 +97,12 @@ class DBServices {
     }
 
     _updateFoodInLocalStore(food: FoodEntity) {
+        // console.log(' initial food list: ', this.foods);
+
         const foodIndex = this.foods.findIndex((item: FoodEntity) => food.id == item.id);
         this.foods[foodIndex] = food;
+
+        // console.log(' food list after update: ', this.foods);
     }
 
     _update(food: FoodEntity, callback?: () => void) {
@@ -119,8 +123,7 @@ class DBServices {
     }
 
     _deleteFoodFromLocalStore(food: FoodEntity) {
-        const foodIndex = this.foods.findIndex((item: FoodEntity) => food.id == item.id);
-        this.foods.splice(foodIndex, 1);
+        this.foods = this.foods.filter((element) => element.id !== food.id );
     }
 
     _delete(food: FoodEntity, callback?: () => void) {

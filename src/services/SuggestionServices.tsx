@@ -62,7 +62,7 @@ class SuggestionServices {
             recommendedMeal = possibleRecommendedMeal[Math.floor(Math.random() * possibleRecommendedMeal.length)];
         }
 
-        console.log(' --- recommended meal for:', category, ' - ', recommendedMeal);
+        // console.log(' --- recommended meal for:', category, ' - ', recommendedMeal);
 
         if (recommendedMeal) {
             recommendedMeal.suggestedTimeStamp = Date.now();

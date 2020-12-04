@@ -54,6 +54,8 @@ export default function AddFoodPage(props: props) {
             consecutiveDays,
         }
 
+        // console.log(' --- food with id: ', foodItemToSave.id);
+
         if (foodItemToSave.id) {
             DBServices.updateFood(foodItemToSave, () => {
                 suggestMenuAndGoBack();
